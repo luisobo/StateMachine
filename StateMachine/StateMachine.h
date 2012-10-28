@@ -1,5 +1,6 @@
-#import <Foundation/Foundation.h>
+#ifndef StateMachine_StateMachine_h
+#define StateMachine_StateMachine_h
 
-@interface StateMachine : NSObject
+#import "LSStateMachine.h"
 
-@end
+#endif

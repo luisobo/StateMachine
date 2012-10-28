@@ -8,14 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		A001F2031630DB10002AEC31 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A001F2021630DB10002AEC31 /* Foundation.framework */; };
-		A001F2081630DB10002AEC31 /* StateMachine.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A001F2071630DB10002AEC31 /* StateMachine.h */; };
-		A001F20A1630DB10002AEC31 /* StateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = A001F2091630DB10002AEC31 /* StateMachine.m */; };
 		A001F2121630DB11002AEC31 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A001F2111630DB11002AEC31 /* SenTestingKit.framework */; };
-		A001F2141630DB11002AEC31 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A001F2131630DB11002AEC31 /* UIKit.framework */; };
 		A001F2151630DB11002AEC31 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A001F2021630DB10002AEC31 /* Foundation.framework */; };
 		A001F2181630DB11002AEC31 /* libStateMachine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A001F1FF1630DB10002AEC31 /* libStateMachine.a */; };
 		A001F21E1630DB11002AEC31 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A001F21C1630DB11002AEC31 /* InfoPlist.strings */; };
 		A001F2211630DB11002AEC31 /* StateMachineSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A001F2201630DB11002AEC31 /* StateMachineSpec.m */; };
+		A066CFED163D84D00061797C /* LSStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFEC163D84D00061797C /* LSStateMachine.m */; };
+		A066CFEF163D850B0061797C /* LSStateMachineSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFEE163D850B0061797C /* LSStateMachineSpec.m */; };
 		FFAC3D8A89A54BA0973EF314 /* libPods-StateMachineTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E77622C3F81426C94A2727E /* libPods-StateMachineTests.a */; };
 /* End PBXBuildFile section */
 
@@ -36,7 +35,6 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
-				A001F2081630DB10002AEC31 /* StateMachine.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,14 +46,15 @@
 		A001F1FF1630DB10002AEC31 /* libStateMachine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStateMachine.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A001F2021630DB10002AEC31 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A001F2061630DB10002AEC31 /* StateMachine-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StateMachine-Prefix.pch"; sourceTree = "<group>"; };
-		A001F2071630DB10002AEC31 /* StateMachine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StateMachine.h; sourceTree = "<group>"; };
-		A001F2091630DB10002AEC31 /* StateMachine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StateMachine.m; sourceTree = "<group>"; };
 		A001F2101630DB11002AEC31 /* StateMachineTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StateMachineTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A001F2111630DB11002AEC31 /* SenTestingKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		A001F2131630DB11002AEC31 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		A001F21B1630DB11002AEC31 /* StateMachineTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StateMachineTests-Info.plist"; sourceTree = "<group>"; };
 		A001F21D1630DB11002AEC31 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A001F2201630DB11002AEC31 /* StateMachineSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StateMachineSpec.m; sourceTree = "<group>"; };
+		A066CFEB163D84D00061797C /* LSStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSStateMachine.h; sourceTree = "<group>"; };
+		A066CFEC163D84D00061797C /* LSStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSStateMachine.m; sourceTree = "<group>"; };
+		A066CFEE163D850B0061797C /* LSStateMachineSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSStateMachineSpec.m; sourceTree = "<group>"; };
+		A066CFF1163D85F90061797C /* StateMachine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StateMachine.h; path = StateMachine/StateMachine.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +71,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A001F2121630DB11002AEC31 /* SenTestingKit.framework in Frameworks */,
-				A001F2141630DB11002AEC31 /* UIKit.framework in Frameworks */,
 				A001F2151630DB11002AEC31 /* Foundation.framework in Frameworks */,
 				A001F2181630DB11002AEC31 /* libStateMachine.a in Frameworks */,
 				FFAC3D8A89A54BA0973EF314 /* libPods-StateMachineTests.a in Frameworks */,
@@ -85,6 +83,7 @@
 		A001F1F41630DB10002AEC31 = {
 			isa = PBXGroup;
 			children = (
+				A066CFF1163D85F90061797C /* StateMachine.h */,
 				A001F2041630DB10002AEC31 /* StateMachine */,
 				A001F2191630DB11002AEC31 /* StateMachineTests */,
 				A001F2011630DB10002AEC31 /* Frameworks */,
@@ -107,7 +106,6 @@
 			children = (
 				A001F2021630DB10002AEC31 /* Foundation.framework */,
 				A001F2111630DB11002AEC31 /* SenTestingKit.framework */,
-				A001F2131630DB11002AEC31 /* UIKit.framework */,
 				1E77622C3F81426C94A2727E /* libPods-StateMachineTests.a */,
 			);
 			name = Frameworks;
@@ -116,9 +114,9 @@
 		A001F2041630DB10002AEC31 /* StateMachine */ = {
 			isa = PBXGroup;
 			children = (
-				A001F2071630DB10002AEC31 /* StateMachine.h */,
-				A001F2091630DB10002AEC31 /* StateMachine.m */,
 				A001F2051630DB10002AEC31 /* Supporting Files */,
+				A066CFEB163D84D00061797C /* LSStateMachine.h */,
+				A066CFEC163D84D00061797C /* LSStateMachine.m */,
 			);
 			path = StateMachine;
 			sourceTree = "<group>";
@@ -136,6 +134,7 @@
 			children = (
 				A001F2201630DB11002AEC31 /* StateMachineSpec.m */,
 				A001F21A1630DB11002AEC31 /* Supporting Files */,
+				A066CFEE163D850B0061797C /* LSStateMachineSpec.m */,
 			);
 			path = StateMachineTests;
 			sourceTree = "<group>";
@@ -262,7 +261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A001F20A1630DB10002AEC31 /* StateMachine.m in Sources */,
+				A066CFED163D84D00061797C /* LSStateMachine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A001F2211630DB11002AEC31 /* StateMachineSpec.m in Sources */,
+				A066CFEF163D850B0061797C /* LSStateMachineSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,6 +348,7 @@
 				DSTROOT = /tmp/StateMachine.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StateMachine/StateMachine-Prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -360,6 +361,7 @@
 				DSTROOT = /tmp/StateMachine.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StateMachine/StateMachine-Prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

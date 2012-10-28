@@ -1,9 +1,26 @@
 #import "Kiwi.h"
+#import <objc/runtime.h>
+#import "LSStateMachine.h"
 
 @interface Subscription : NSObject
 @property (nonatomic, retain) NSString *state;
 @end
 @implementation Subscription
++ (LSStateMachine *)stateMachine {
+    return nil;
+}
+BOOL activate(id self, SEL _cmd) {
+    Subscription *subscription = (Subscription *)self;
+    if ([@[@"pending"] containsObject:subscription.state]) {
+        subscription.state = @"active";
+        return YES;
+    } else {
+        return NO;
+    }
+}
++ (void) initialize {
+    class_addMethod(self, @selector(activate), (IMP) activate, "v@:");
+}
 - (id)init {
     self = [super init];
     if (self) {
@@ -12,10 +29,6 @@
     return self;
 }
 
-- (BOOL)activate {
-    self.state = @"active";
-    return YES;
-}
 - (BOOL)suspend {
     self.state = @"suspended";
     return YES;
@@ -128,12 +141,26 @@ context(@"given a Subscripion", ^{
     });
     
     describe(@"invalid transitions", ^{
-        describe(@"from 'pending' to 'terminated'", ^{
-            it(@"should return NO", ^{
-                BOOL result = [sut terminate];
-                [[theValue(result) should] beNo];
+        describe(@"activate", ^{
+            describe(@"from 'suspended", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut suspend];
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut activate]) should] beNo];
+                });
             });
         });
+        describe(@"terminate", ^{
+            describe(@"from pending", ^{
+                it(@"should return NO", ^{
+                    [[theValue([sut terminate]) should] beNo];
+                });
+            });
+        });
+
+
     });
 });
 SPEC_END
