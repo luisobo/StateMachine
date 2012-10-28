@@ -9,6 +9,7 @@ void * statekey = &statekey;
 void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
 
 @interface Subscription (State)
+- (void)initializeStateMachine;
 - (BOOL)activate;
 - (BOOL)suspend;
 - (BOOL)unsuspend;
@@ -52,17 +53,23 @@ BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
     }
 }
 
+void LSStateMachineInitializeInstance(id self, SEL _cmd) {
+    LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
+    [self performSelector:@selector(setState:) withObject:[sm initialState]];
+}
+
 + (void) initialize {
     LSStateMachine *sm = [self stateMachine];
     for (LSEvent *event in sm.events) {
         class_addMethod(self, NSSelectorFromString(event.name), (IMP) LSStateMachineTriggerEvent, "i@:");
     }
+    class_addMethod(self, @selector(initializeStateMachine), (IMP) LSStateMachineInitializeInstance, "v@:");
 
 }
 - (id)init {
     self = [super init];
     if (self) {
-        _state = @"pending";
+        [self initializeStateMachine];
     }
     return self;
 }
