@@ -1,11 +1,12 @@
 #import "Kiwi.h"
 #import <objc/runtime.h>
-#import "LSStateMachine.h"
+#import "StateMachine.h"
 
 @interface Subscription : NSObject
 @property (nonatomic, retain) NSString *state;
 @end
 void * statekey = &statekey;
+void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
 
 @interface Subscription (State)
 - (BOOL)activate;
@@ -15,17 +16,26 @@ void * statekey = &statekey;
 @end
 @implementation Subscription
 + (LSStateMachine *)stateMachine {
-    LSStateMachine *sm = [[LSStateMachine alloc] init];
-    [sm addState:@"pending"];
-    [sm addState:@"active"];
-    [sm addState:@"suspended"];
-    [sm addState:@"terminated"];
-    
-    [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
-    [sm when:@"suspend" transitionFrom:@"active" to:@"suspended"];
-    [sm when:@"unsuspend" transitionFrom:@"suspended" to:@"active"];
-    [sm when:@"terminate" transitionFrom:@"active" to:@"terminated"];
-    [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
+    LSStateMachine *sm = (LSStateMachine *)objc_getAssociatedObject(self, &LSStateMachineDefinitionKey);
+    if (!sm) {
+        sm = [[LSStateMachine alloc] init];
+        objc_setAssociatedObject (
+                                  self,
+                                  &LSStateMachineDefinitionKey,
+                                  sm,
+                                  OBJC_ASSOCIATION_RETAIN
+                                  );
+        [sm addState:@"pending"];
+        [sm addState:@"active"];
+        [sm addState:@"suspended"];
+        [sm addState:@"terminated"];
+        
+        [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
+        [sm when:@"suspend" transitionFrom:@"active" to:@"suspended"];
+        [sm when:@"unsuspend" transitionFrom:@"suspended" to:@"active"];
+        [sm when:@"terminate" transitionFrom:@"active" to:@"terminated"];
+        [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
+    }
     
     return sm;
 }
@@ -43,10 +53,10 @@ BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
 }
 
 + (void) initialize {
-    class_addMethod(self, @selector(activate), (IMP) LSStateMachineTriggerEvent, "i@:");
-    class_addMethod(self, @selector(suspend), (IMP) LSStateMachineTriggerEvent, "i@:");
-    class_addMethod(self, @selector(unsuspend), (IMP) LSStateMachineTriggerEvent, "i@:");
-    class_addMethod(self, @selector(terminate), (IMP) LSStateMachineTriggerEvent, "i@:");
+    LSStateMachine *sm = [self stateMachine];
+    for (LSEvent *event in sm.events) {
+        class_addMethod(self, NSSelectorFromString(event.name), (IMP) LSStateMachineTriggerEvent, "i@:");
+    }
 
 }
 - (id)init {
