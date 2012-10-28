@@ -15,6 +15,10 @@
 		A001F2211630DB11002AEC31 /* StateMachineSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A001F2201630DB11002AEC31 /* StateMachineSpec.m */; };
 		A066CFED163D84D00061797C /* LSStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFEC163D84D00061797C /* LSStateMachine.m */; };
 		A066CFEF163D850B0061797C /* LSStateMachineSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFEE163D850B0061797C /* LSStateMachineSpec.m */; };
+		A066CFF3163D8FF50061797C /* LSEventSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFF2163D8FF50061797C /* LSEventSpec.m */; };
+		A066CFF6163D90190061797C /* LSEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFF5163D90190061797C /* LSEvent.m */; };
+		A066CFF8163D94070061797C /* LSTransitionSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFF7163D94070061797C /* LSTransitionSpec.m */; };
+		A066CFFB163D941D0061797C /* LSTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFFA163D941D0061797C /* LSTransition.m */; };
 		FFAC3D8A89A54BA0973EF314 /* libPods-StateMachineTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E77622C3F81426C94A2727E /* libPods-StateMachineTests.a */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +59,12 @@
 		A066CFEC163D84D00061797C /* LSStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSStateMachine.m; sourceTree = "<group>"; };
 		A066CFEE163D850B0061797C /* LSStateMachineSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSStateMachineSpec.m; sourceTree = "<group>"; };
 		A066CFF1163D85F90061797C /* StateMachine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StateMachine.h; path = StateMachine/StateMachine.h; sourceTree = "<group>"; };
+		A066CFF2163D8FF50061797C /* LSEventSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSEventSpec.m; sourceTree = "<group>"; };
+		A066CFF4163D90190061797C /* LSEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSEvent.h; sourceTree = "<group>"; };
+		A066CFF5163D90190061797C /* LSEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSEvent.m; sourceTree = "<group>"; };
+		A066CFF7163D94070061797C /* LSTransitionSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSTransitionSpec.m; sourceTree = "<group>"; };
+		A066CFF9163D941D0061797C /* LSTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSTransition.h; sourceTree = "<group>"; };
+		A066CFFA163D941D0061797C /* LSTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSTransition.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +127,10 @@
 				A001F2051630DB10002AEC31 /* Supporting Files */,
 				A066CFEB163D84D00061797C /* LSStateMachine.h */,
 				A066CFEC163D84D00061797C /* LSStateMachine.m */,
+				A066CFF4163D90190061797C /* LSEvent.h */,
+				A066CFF5163D90190061797C /* LSEvent.m */,
+				A066CFF9163D941D0061797C /* LSTransition.h */,
+				A066CFFA163D941D0061797C /* LSTransition.m */,
 			);
 			path = StateMachine;
 			sourceTree = "<group>";
@@ -132,9 +146,11 @@
 		A001F2191630DB11002AEC31 /* StateMachineTests */ = {
 			isa = PBXGroup;
 			children = (
-				A001F2201630DB11002AEC31 /* StateMachineSpec.m */,
 				A001F21A1630DB11002AEC31 /* Supporting Files */,
+				A001F2201630DB11002AEC31 /* StateMachineSpec.m */,
 				A066CFEE163D850B0061797C /* LSStateMachineSpec.m */,
+				A066CFF2163D8FF50061797C /* LSEventSpec.m */,
+				A066CFF7163D94070061797C /* LSTransitionSpec.m */,
 			);
 			path = StateMachineTests;
 			sourceTree = "<group>";
@@ -262,6 +278,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A066CFED163D84D00061797C /* LSStateMachine.m in Sources */,
+				A066CFF6163D90190061797C /* LSEvent.m in Sources */,
+				A066CFFB163D941D0061797C /* LSTransition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +289,8 @@
 			files = (
 				A001F2211630DB11002AEC31 /* StateMachineSpec.m in Sources */,
 				A066CFEF163D850B0061797C /* LSStateMachineSpec.m in Sources */,
+				A066CFF3163D8FF50061797C /* LSEventSpec.m in Sources */,
+				A066CFF8163D94070061797C /* LSTransitionSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

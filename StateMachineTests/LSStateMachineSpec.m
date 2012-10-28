@@ -1,5 +1,8 @@
+
 #import "Kiwi.h"
 #import "LSStateMachine.h"
+#import "LSEvent.h"
+#import "LStransition.h"
 
 SPEC_BEGIN(LSStateMachineSpec)
 __block LSStateMachine *sm = nil;
@@ -78,7 +81,7 @@ describe(@"addState", ^{
 
 describe(@"addTransition", ^{
     it(@"should have no transitions by default", ^{
-        [[sm.transitions should] equal: [[NSSet alloc] init]];
+        [[sm.events should] equal: [[NSSet alloc] init]];
     });
     context(@"given a state machine with the states 'pending' and 'active'", ^{
         beforeEach(^{
@@ -86,7 +89,17 @@ describe(@"addTransition", ^{
             [sm addState:@"active"];
         });
         describe(@"after adding a transition from 'pending' to 'active' called activate", ^{
-            [sm addTransition:@"activate" from:@"pending" to:@"activate"];
+            describe(@"when the SM has no events previously defined", ^{
+                it(@"should contain one event", ^{
+                    [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
+                    
+                    [[sm.events should] haveCountOf:1];
+                    NSSet *transitions = [NSSet setWithObject:[LSTransition transitionFrom:@"pending" to:@"active"]];
+                    LSEvent * event = [LSEvent eventWithName:@"activate"
+                                                 transitions:transitions];
+                    [[sm.events should] contain:event];
+                });
+            });
         });
 
     });

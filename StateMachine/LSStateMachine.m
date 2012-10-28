@@ -1,15 +1,21 @@
 #import "LSStateMachine.h"
+#import "LSEvent.h"
+#import "LSTransition.h"
+
+@interface LSStateMachine ()
+- (LSEvent *)eventWithName:(NSString *)name;
+@end
 
 @interface LSStateMachine ()
 @property (nonatomic, strong) NSMutableSet *mutableStates;
-@property (nonatomic, strong) NSMutableSet *mutableTransitions;
+@property (nonatomic, strong) NSMutableSet *mutableEvents;
 @end
 @implementation LSStateMachine
 - (id)init {
     self = [super init];
     if (self) {
         _mutableStates = [[NSMutableSet alloc] init];
-        _mutableTransitions = [[NSMutableSet alloc] init];
+        _mutableEvents = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -24,16 +30,24 @@
     }
 }
 
-- (void)addTransition:(NSString *)eventName from:(NSString *)initialState to:(NSString *)finalState {
-    
+- (void)when:(NSString *)eventName transitionFrom:(NSString *)from to:(NSString *)to; {
+    LSEvent *event = [self eventWithName:eventName];
+    LSTransition *transition = [LSTransition transitionFrom:from to:to];
+    if (!event) {
+        event = [LSEvent eventWithName:eventName transitions:[NSSet setWithObject:transition]];
+    } else {
+        [self.mutableEvents removeObject:event];
+        event = [event addTransition:transition];
+    }
+    [self.mutableEvents addObject:event];
 }
 
 - (NSSet *)states {
     return [NSSet setWithSet:self.mutableStates];
 }
 
-- (NSSet *)transitions {
-    return [NSSet setWithSet:self.mutableTransitions];
+- (NSSet *)events {
+    return [NSSet setWithSet:self.mutableEvents];
 }
 
 - (void)setInitialState:(NSString *)defaultState {
@@ -42,4 +56,18 @@
     [self.mutableStates addObject:defaultState];
     [self didChangeValueForKey:@"defaulState"];
 }
+
+#pragma mark - Private Methods
+
+- (LSEvent *)eventWithName:(NSString *)name {
+    for (LSEvent *event in self.events) {
+        if ([event.name isEqualToString:name])
+            return event;
+    }
+    return nil;
+}
+
+
+
+
 @end
