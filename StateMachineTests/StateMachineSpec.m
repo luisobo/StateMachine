@@ -5,21 +5,49 @@
 @interface Subscription : NSObject
 @property (nonatomic, retain) NSString *state;
 @end
+void * statekey = &statekey;
+
+@interface Subscription (State)
+- (BOOL)activate;
+- (BOOL)suspend;
+- (BOOL)unsuspend;
+- (BOOL)terminate;
+@end
 @implementation Subscription
 + (LSStateMachine *)stateMachine {
-    return nil;
+    LSStateMachine *sm = [[LSStateMachine alloc] init];
+    [sm addState:@"pending"];
+    [sm addState:@"active"];
+    [sm addState:@"suspended"];
+    [sm addState:@"terminated"];
+    
+    [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
+    [sm when:@"suspend" transitionFrom:@"active" to:@"suspended"];
+    [sm when:@"unsuspend" transitionFrom:@"suspended" to:@"active"];
+    [sm when:@"terminate" transitionFrom:@"active" to:@"terminated"];
+    [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
+    
+    return sm;
 }
-BOOL activate(id self, SEL _cmd) {
-    Subscription *subscription = (Subscription *)self;
-    if ([@[@"pending"] containsObject:subscription.state]) {
-        subscription.state = @"active";
+
+BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
+    NSString *currentState = [self performSelector:@selector(state)];
+    LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
+    NSString *nextState = [sm nextStateFrom:currentState forEvent:NSStringFromSelector(_cmd)];
+    if (nextState) {
+        [self performSelector:@selector(setState:) withObject:nextState];
         return YES;
     } else {
         return NO;
     }
 }
+
 + (void) initialize {
-    class_addMethod(self, @selector(activate), (IMP) activate, "v@:");
+    class_addMethod(self, @selector(activate), (IMP) LSStateMachineTriggerEvent, "i@:");
+    class_addMethod(self, @selector(suspend), (IMP) LSStateMachineTriggerEvent, "i@:");
+    class_addMethod(self, @selector(unsuspend), (IMP) LSStateMachineTriggerEvent, "i@:");
+    class_addMethod(self, @selector(terminate), (IMP) LSStateMachineTriggerEvent, "i@:");
+
 }
 - (id)init {
     self = [super init];
@@ -29,30 +57,6 @@ BOOL activate(id self, SEL _cmd) {
     return self;
 }
 
-- (BOOL)suspend {
-    self.state = @"suspended";
-    return YES;
-}
-- (BOOL)unsuspend {
-    self.state = @"active";
-    return YES;
-}
-- (BOOL)terminate {
-    if ([@[@"active", @"suspended"] containsObject:self.state]) {
-        self.state = @"terminated";
-        return YES;
-    } else {
-        return NO;
-    }
-}
-
-@end
-@interface Subscription (State)
-@property (nonatomic, retain, readonly) NSString *state;
-- (BOOL)activate;
-- (BOOL)suspend;
-- (BOOL)unsuspend;
-- (BOOL)terminate;
 @end
 
 SPEC_BEGIN(StateMachineSpec)

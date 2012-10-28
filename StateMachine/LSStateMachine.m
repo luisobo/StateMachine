@@ -42,6 +42,16 @@
     [self.mutableEvents addObject:event];
 }
 
+- (NSString *)nextStateFrom:(NSString *)from forEvent:(NSString *)eventName {
+    LSEvent *event = [self eventWithName:eventName];
+    for (LSTransition *transition in event.transitions) {
+        if ([transition.from isEqualToString:from]) {
+            return transition.to;
+        }
+    }
+    return nil;
+}
+
 - (NSSet *)states {
     return [NSSet setWithSet:self.mutableStates];
 }
@@ -66,8 +76,5 @@
     }
     return nil;
 }
-
-
-
 
 @end

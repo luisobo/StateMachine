@@ -6,4 +6,5 @@
 @property (nonatomic, strong) NSString *initialState;
 - (void)addState:(NSString *)state;
 - (void)when:(NSString *)eventName transitionFrom:(NSString *)from to:(NSString *)to;
+- (NSString *)nextStateFrom:(NSString *)from forEvent:(NSString *)event;
 @end

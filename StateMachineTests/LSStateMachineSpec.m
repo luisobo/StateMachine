@@ -104,4 +104,21 @@ describe(@"addTransition", ^{
 
     });
 });
+
+describe(@"nextStateFrom:forEvent:", ^{
+    context(@"given a SM with two states and one transition", ^{
+        beforeEach(^{
+            [sm addState:@"pending"];
+            [sm addState:@"active"];
+            
+            [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
+        });
+        
+        context(@"when asking for the next state of a valid transition", ^{
+            it(@"should return the correct state", ^{
+                [sm nextStateFrom:@"pending" forEvent:@"activate"];
+            });
+        });
+    });
+});
 SPEC_END
