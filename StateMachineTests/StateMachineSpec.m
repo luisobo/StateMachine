@@ -12,26 +12,34 @@
     return self;
 }
 
-- (void)activate {
+- (BOOL)activate {
     self.state = @"active";
+    return YES;
 }
-- (void)suspend {
+- (BOOL)suspend {
     self.state = @"suspended";
+    return YES;
 }
-- (void)terminate {
+- (BOOL)unsuspend {
+    self.state = @"active";
+    return YES;
+}
+- (BOOL)terminate {
     if ([@[@"active", @"suspended"] containsObject:self.state]) {
         self.state = @"terminated";
+        return YES;
     } else {
-        [NSException raise:@"StateMachineInvalidTransition" format:@"A 'Subscription' received a 'terminate' event in the state 'pending', which is an invalid transition"];
+        return NO;
     }
 }
 
 @end
 @interface Subscription (State)
 @property (nonatomic, retain, readonly) NSString *state;
-- (void)activate;
-- (void)suspend;
-- (void)terminate;
+- (BOOL)activate;
+- (BOOL)suspend;
+- (BOOL)unsuspend;
+- (BOOL)terminate;
 @end
 
 SPEC_BEGIN(StateMachineSpec)
@@ -52,37 +60,68 @@ context(@"given a Subscripion", ^{
             describe(@"from 'pending'", ^{
                 it(@"should change the state to 'active'", ^{
                     [sut activate];
+                    
                     [[sut.state should] equal:@"active"];
+                });
+                it(@"should return YES", ^{
+                    [[theValue([sut activate]) should] beYes];
                 });
             });
         });
         describe(@"suspend", ^{
             describe(@"from 'active'", ^{
-                it(@"should change the state to 'suspended'", ^{
+                beforeEach(^{
                     [sut activate];
-                    
+                });
+                it(@"should change the state to 'suspended'", ^{
                     [sut suspend];
                     [[sut.state should] equal:@"suspended"];
                     
+                });
+                it(@"should return YES", ^{
+                    [[theValue([sut suspend]) should] beYes];
+                });
+            });
+        });
+        describe(@"unsuspend", ^{
+            describe(@"from 'suspended'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut suspend];
+                });
+                it(@"should change the state to 'active'", ^{
+                    [sut unsuspend];
+                    [[sut.state should] equal:@"active"];
+                });
+                it(@"should return YES", ^{
+                    [[theValue([sut unsuspend]) should] beYes];
                 });
             });
         });
         describe(@"terminate", ^{
             describe(@"from'active'", ^{
-                it(@"should change the state to 'terminated'", ^{
+                beforeEach(^{
                     [sut activate];
-                    
+                });
+                it(@"should change the state to 'terminated'", ^{
                     [sut terminate];
                     [[sut.state should] equal:@"terminated"];
                 });
+                it(@"should return YES", ^{
+                    [[theValue([sut terminate]) should] beYes];
+                });
             });
             describe(@"from 'suspended'", ^{
-                it(@"should change the state to 'terminated'", ^{
+                beforeEach(^{
                     [sut activate];
                     [sut suspend];
-                    
+                });
+                it(@"should change the state to 'terminated'", ^{
                     [sut terminate];
                     [[sut.state should] equal:@"terminated"];
+                });
+                it(@"should return YES", ^{
+                    [[theValue([sut terminate]) should] beYes];
                 });
             });
         });
@@ -90,10 +129,9 @@ context(@"given a Subscripion", ^{
     
     describe(@"invalid transitions", ^{
         describe(@"from 'pending' to 'terminated'", ^{
-            it(@"should raise an exception", ^{
-                [[theBlock(^{
-                    [sut terminate];
-                }) should] raiseWithName:@"StateMachineInvalidTransition" reason:@"A 'Subscription' received a 'terminate' event in the state 'pending', which is an invalid transition"];
+            it(@"should return NO", ^{
+                BOOL result = [sut terminate];
+                [[theValue(result) should] beNo];
             });
         });
     });
