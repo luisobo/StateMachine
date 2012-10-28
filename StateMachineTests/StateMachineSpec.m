@@ -8,6 +8,22 @@
 void * statekey = &statekey;
 void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
 
+#define STATE_MACHINE(definition) \
++ (LSStateMachine *)stateMachine {\
+LSStateMachine *sm = (LSStateMachine *)objc_getAssociatedObject(self, &LSStateMachineDefinitionKey);\
+if (!sm) {\
+    sm = [[LSStateMachine alloc] init];\
+    objc_setAssociatedObject (\
+                              self,\
+                              &LSStateMachineDefinitionKey,\
+                              sm,\
+                              OBJC_ASSOCIATION_RETAIN\
+                              );\
+    definition(sm);\
+}\
+return sm;\
+}\
+
 @interface Subscription (State)
 - (void)initializeStateMachine;
 - (BOOL)activate;
@@ -16,30 +32,19 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
 - (BOOL)terminate;
 @end
 @implementation Subscription
-+ (LSStateMachine *)stateMachine {
-    LSStateMachine *sm = (LSStateMachine *)objc_getAssociatedObject(self, &LSStateMachineDefinitionKey);
-    if (!sm) {
-        sm = [[LSStateMachine alloc] init];
-        objc_setAssociatedObject (
-                                  self,
-                                  &LSStateMachineDefinitionKey,
-                                  sm,
-                                  OBJC_ASSOCIATION_RETAIN
-                                  );
-        [sm addState:@"pending"];
-        [sm addState:@"active"];
-        [sm addState:@"suspended"];
-        [sm addState:@"terminated"];
-        
-        [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
-        [sm when:@"suspend" transitionFrom:@"active" to:@"suspended"];
-        [sm when:@"unsuspend" transitionFrom:@"suspended" to:@"active"];
-        [sm when:@"terminate" transitionFrom:@"active" to:@"terminated"];
-        [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
-    }
+
+STATE_MACHINE(^(LSStateMachine *sm) {
+    [sm addState:@"pending"];
+    [sm addState:@"active"];
+    [sm addState:@"suspended"];
+    [sm addState:@"terminated"];
     
-    return sm;
-}
+    [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
+    [sm when:@"suspend" transitionFrom:@"active" to:@"suspended"];
+    [sm when:@"unsuspend" transitionFrom:@"suspended" to:@"active"];
+    [sm when:@"terminate" transitionFrom:@"active" to:@"terminated"];
+    [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
+});
 
 BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
     NSString *currentState = [self performSelector:@selector(state)];
