@@ -1,0 +1,5 @@
+PODS:
+  - Kiwi (1.1.0)
+
+DEPENDENCIES:
+  - Kiwi (~> 1.1.0)

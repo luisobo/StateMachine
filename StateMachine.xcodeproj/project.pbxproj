@@ -15,7 +15,8 @@
 		A001F2151630DB11002AEC31 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A001F2021630DB10002AEC31 /* Foundation.framework */; };
 		A001F2181630DB11002AEC31 /* libStateMachine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A001F1FF1630DB10002AEC31 /* libStateMachine.a */; };
 		A001F21E1630DB11002AEC31 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A001F21C1630DB11002AEC31 /* InfoPlist.strings */; };
-		A001F2211630DB11002AEC31 /* StateMachineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A001F2201630DB11002AEC31 /* StateMachineTests.m */; };
+		A001F2211630DB11002AEC31 /* StateMachineSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A001F2201630DB11002AEC31 /* StateMachineSpec.m */; };
+		FFAC3D8A89A54BA0973EF314 /* libPods-StateMachineTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E77622C3F81426C94A2727E /* libPods-StateMachineTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,18 +43,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1E77622C3F81426C94A2727E /* libPods-StateMachineTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StateMachineTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BBE849696034C15B9965570 /* Pods-StateMachineTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StateMachineTests.xcconfig"; path = "Pods/Pods-StateMachineTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		A001F1FF1630DB10002AEC31 /* libStateMachine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStateMachine.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		A001F2021630DB10002AEC31 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		A001F2021630DB10002AEC31 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A001F2061630DB10002AEC31 /* StateMachine-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StateMachine-Prefix.pch"; sourceTree = "<group>"; };
 		A001F2071630DB10002AEC31 /* StateMachine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StateMachine.h; sourceTree = "<group>"; };
 		A001F2091630DB10002AEC31 /* StateMachine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StateMachine.m; sourceTree = "<group>"; };
 		A001F2101630DB11002AEC31 /* StateMachineTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StateMachineTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A001F2111630DB11002AEC31 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		A001F2131630DB11002AEC31 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		A001F2111630DB11002AEC31 /* SenTestingKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		A001F2131630DB11002AEC31 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		A001F21B1630DB11002AEC31 /* StateMachineTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StateMachineTests-Info.plist"; sourceTree = "<group>"; };
 		A001F21D1630DB11002AEC31 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		A001F21F1630DB11002AEC31 /* StateMachineTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StateMachineTests.h; sourceTree = "<group>"; };
-		A001F2201630DB11002AEC31 /* StateMachineTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StateMachineTests.m; sourceTree = "<group>"; };
+		A001F2201630DB11002AEC31 /* StateMachineSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StateMachineSpec.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				A001F2141630DB11002AEC31 /* UIKit.framework in Frameworks */,
 				A001F2151630DB11002AEC31 /* Foundation.framework in Frameworks */,
 				A001F2181630DB11002AEC31 /* libStateMachine.a in Frameworks */,
+				FFAC3D8A89A54BA0973EF314 /* libPods-StateMachineTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +89,7 @@
 				A001F2191630DB11002AEC31 /* StateMachineTests */,
 				A001F2011630DB10002AEC31 /* Frameworks */,
 				A001F2001630DB10002AEC31 /* Products */,
+				2BBE849696034C15B9965570 /* Pods-StateMachineTests.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -104,6 +108,7 @@
 				A001F2021630DB10002AEC31 /* Foundation.framework */,
 				A001F2111630DB11002AEC31 /* SenTestingKit.framework */,
 				A001F2131630DB11002AEC31 /* UIKit.framework */,
+				1E77622C3F81426C94A2727E /* libPods-StateMachineTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -129,8 +134,7 @@
 		A001F2191630DB11002AEC31 /* StateMachineTests */ = {
 			isa = PBXGroup;
 			children = (
-				A001F21F1630DB11002AEC31 /* StateMachineTests.h */,
-				A001F2201630DB11002AEC31 /* StateMachineTests.m */,
+				A001F2201630DB11002AEC31 /* StateMachineSpec.m */,
 				A001F21A1630DB11002AEC31 /* Supporting Files */,
 			);
 			path = StateMachineTests;
@@ -173,6 +177,7 @@
 				A001F20C1630DB11002AEC31 /* Frameworks */,
 				A001F20D1630DB11002AEC31 /* Resources */,
 				A001F20E1630DB11002AEC31 /* ShellScript */,
+				EA48F955A4AB4F808236DE81 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -236,6 +241,20 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
+		EA48F955A4AB4F808236DE81 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-StateMachineTests-resources.sh\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -251,7 +270,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A001F2211630DB11002AEC31 /* StateMachineTests.m in Sources */,
+				A001F2211630DB11002AEC31 /* StateMachineSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,6 +368,7 @@
 		};
 		A001F2281630DB11002AEC31 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2BBE849696034C15B9965570 /* Pods-StateMachineTests.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
@@ -364,6 +384,7 @@
 		};
 		A001F2291630DB11002AEC31 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2BBE849696034C15B9965570 /* Pods-StateMachineTests.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
@@ -396,6 +417,7 @@
 				A001F2261630DB11002AEC31 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A001F2271630DB11002AEC31 /* Build configuration list for PBXNativeTarget "StateMachineTests" */ = {
 			isa = XCConfigurationList;
@@ -404,6 +426,7 @@
 				A001F2291630DB11002AEC31 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
