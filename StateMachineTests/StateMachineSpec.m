@@ -1,28 +1,9 @@
 #import "Kiwi.h"
-#import <objc/runtime.h>
 #import "StateMachine.h"
 
 @interface Subscription : NSObject
 @property (nonatomic, retain) NSString *state;
 @end
-void * statekey = &statekey;
-void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
-
-#define STATE_MACHINE(definition) \
-+ (LSStateMachine *)stateMachine {\
-LSStateMachine *sm = (LSStateMachine *)objc_getAssociatedObject(self, &LSStateMachineDefinitionKey);\
-if (!sm) {\
-    sm = [[LSStateMachine alloc] init];\
-    objc_setAssociatedObject (\
-                              self,\
-                              &LSStateMachineDefinitionKey,\
-                              sm,\
-                              OBJC_ASSOCIATION_RETAIN\
-                              );\
-    definition(sm);\
-}\
-return sm;\
-}\
 
 @interface Subscription (State)
 - (void)initializeStateMachine;
@@ -45,32 +26,6 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     [sm when:@"terminate" transitionFrom:@"active" to:@"terminated"];
     [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
 });
-
-BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
-    NSString *currentState = [self performSelector:@selector(state)];
-    LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
-    NSString *nextState = [sm nextStateFrom:currentState forEvent:NSStringFromSelector(_cmd)];
-    if (nextState) {
-        [self performSelector:@selector(setState:) withObject:nextState];
-        return YES;
-    } else {
-        return NO;
-    }
-}
-
-void LSStateMachineInitializeInstance(id self, SEL _cmd) {
-    LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
-    [self performSelector:@selector(setState:) withObject:[sm initialState]];
-}
-
-+ (void) initialize {
-    LSStateMachine *sm = [self stateMachine];
-    for (LSEvent *event in sm.events) {
-        class_addMethod(self, NSSelectorFromString(event.name), (IMP) LSStateMachineTriggerEvent, "i@:");
-    }
-    class_addMethod(self, @selector(initializeStateMachine), (IMP) LSStateMachineInitializeInstance, "v@:");
-
-}
 - (id)init {
     self = [super init];
     if (self) {

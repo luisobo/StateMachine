@@ -65,6 +65,7 @@
 		A066CFF7163D94070061797C /* LSTransitionSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSTransitionSpec.m; sourceTree = "<group>"; };
 		A066CFF9163D941D0061797C /* LSTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSTransition.h; sourceTree = "<group>"; };
 		A066CFFA163D941D0061797C /* LSTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSTransition.m; sourceTree = "<group>"; };
+		A0C8CA39163DE6F50027B912 /* LSStateMachineMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSStateMachineMacros.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +132,7 @@
 				A066CFF5163D90190061797C /* LSEvent.m */,
 				A066CFF9163D941D0061797C /* LSTransition.h */,
 				A066CFFA163D941D0061797C /* LSTransition.m */,
+				A0C8CA39163DE6F50027B912 /* LSStateMachineMacros.h */,
 			);
 			path = StateMachine;
 			sourceTree = "<group>";
