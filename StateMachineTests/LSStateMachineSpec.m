@@ -8,27 +8,27 @@ beforeEach(^{
 });
 describe(@"initialState", ^{
     it(@"should be nil by default", ^{
-        [sm.defaultState shouldBeNil];
+        [sm.initialState shouldBeNil];
     });
-    context(@"when setting the default state", ^{
+    context(@"when setting the initial state", ^{
         it(@"should set that state as default", ^{
-            sm.defaultState = @"pending";
+            sm.initialState = @"pending";
             
-            [[sm.defaultState should] equal:@"pending"]; // Over testing? Probably
+            [[sm.initialState should] equal:@"pending"]; // Over testing? Probably
         });
-        context(@"when the state being set as default does not exist in the state machine", ^{
+        context(@"when the state being set as initial does not exist in the state machine", ^{
             it(@"should also add it", ^{
-                sm.defaultState = @"pending";
+                sm.initialState = @"pending";
                 
                 [[sm.states should] equal:[[NSSet alloc] initWithArray:@[@"pending"]]];
             });
         });
-        context(@"when the state being set as default is already defined in the state machine", ^{
+        context(@"when the state being set as initial is already defined in the state machine", ^{
             beforeEach(^{
                 [sm addState:@"pending"];
             });
             it(@"should no read it", ^{
-                sm.defaultState = @"pending";
+                sm.initialState = @"pending";
                 
                 [[sm.states should] equal:[[NSSet alloc] initWithArray:@[@"pending"]]];
             });
@@ -42,11 +42,17 @@ describe(@"addState", ^{
     });
     
     context(@"after adding one state", ^{
-        beforeEach(^{
-            [sm addState:@"pending"];
-        });
-        it(@"should contain that state", ^{
-            [[sm.states should] equal:[[NSSet alloc] initWithArray:@[@"pending"]]];
+        context(@"when the SM has no initial state", ^{
+            it(@"should contain that state", ^{
+                [sm addState:@"pending"];
+                
+                [[sm.states should] equal:[[NSSet alloc] initWithArray:@[@"pending"]]];
+            });
+            it(@"should set that state as the initial", ^{
+                [sm addState:@"pending"];
+                
+                [[sm.initialState should] equal:@"pending"];
+            });
         });
     });
     

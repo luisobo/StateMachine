@@ -19,6 +19,9 @@
         return;
     }
     [self.mutableStates addObject:state];
+    if (!self.initialState) {
+        self.initialState = state;
+    }
 }
 
 - (void)addTransition:(NSString *)eventName from:(NSString *)initialState to:(NSString *)finalState {
@@ -33,9 +36,9 @@
     return [NSSet setWithSet:self.mutableTransitions];
 }
 
-- (void)setDefaultState:(NSString *)defaultState {
-    [self willChangeValueForKey:@"defaultState"];
-    _defaultState = defaultState;
+- (void)setInitialState:(NSString *)defaultState {
+    [self willChangeValueForKey:@"initialState"];
+    _initialState = defaultState;
     [self.mutableStates addObject:defaultState];
     [self didChangeValueForKey:@"defaulState"];
 }
