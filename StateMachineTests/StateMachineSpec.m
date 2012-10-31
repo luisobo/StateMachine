@@ -15,6 +15,8 @@
 @implementation Subscription
 
 STATE_MACHINE(^(LSStateMachine *sm) {
+    sm.initialState = @"pending";
+    
     [sm addState:@"pending"];
     [sm addState:@"active"];
     [sm addState:@"suspended"];
@@ -26,6 +28,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     [sm when:@"terminate" transitionFrom:@"active" to:@"terminated"];
     [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
 });
+
 - (id)init {
     self = [super init];
     if (self) {
@@ -131,6 +134,7 @@ context(@"given a Subscripion", ^{
                 it(@"should return NO", ^{
                     [[theValue([sut activate]) should] beNo];
                 });
+                // check that the state didn't change
             });
         });
         describe(@"terminate", ^{

@@ -67,7 +67,7 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     [self willChangeValueForKey:@"initialState"];
     _initialState = defaultState;
     [self.mutableStates addObject:defaultState];
-    [self didChangeValueForKey:@"defaulState"];
+    [self didChangeValueForKey:@"initialState"];
 }
 
 #pragma mark - Private Methods
