@@ -23,10 +23,6 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     return self;
 }
 - (void)addState:(NSString *)state {
-    if ([self.mutableStates containsObject:state]) {
-        [NSException raise:NSInvalidArgumentException format:@"The state '%@' is already define in the state machine", state];
-        return;
-    }
     [self.mutableStates addObject:state];
     if (!self.initialState) {
         self.initialState = state;

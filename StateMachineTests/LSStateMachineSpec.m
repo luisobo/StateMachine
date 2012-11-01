@@ -70,11 +70,11 @@ describe(@"addState", ^{
     });
     
     context(@"after adding the same state twice", ^{
-        it(@"should raise an exception", ^{
+        it(@"should have no effect", ^{
             [sm addState:@"pending"];
-            [[theBlock(^{
-                [sm addState:@"pending"];
-            }) should] raiseWithName:NSInvalidArgumentException reason:@"The state 'pending' is already define in the state machine"];
+            [sm addState:@"pending"];
+            
+            [[sm.states should] equal:[NSSet setWithObject:@"pending"]];
         });
     });
 });
