@@ -51,6 +51,13 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     return nil;
 }
 
+- (void)before:(NSString *)eventName do:(void (^)(id object))callback {
+    LSEvent *oldEvent = [self eventWithName:eventName];
+    [self.mutableEvents removeObject:oldEvent];
+    LSEvent *newEvent = [oldEvent addBeforeCallback:callback];
+    [self.mutableEvents addObject:newEvent];
+}
+
 - (NSSet *)states {
     return [NSSet setWithSet:self.mutableStates];
 }
@@ -66,8 +73,6 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     [self didChangeValueForKey:@"initialState"];
 }
 
-#pragma mark - Private Methods
-
 - (LSEvent *)eventWithName:(NSString *)name {
     for (LSEvent *event in self.events) {
         if ([event.name isEqualToString:name])
@@ -81,8 +86,14 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
 BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
     NSString *currentState = [self performSelector:@selector(state)];
     LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
-    NSString *nextState = [sm nextStateFrom:currentState forEvent:NSStringFromSelector(_cmd)];
+    NSString *eventName = NSStringFromSelector(_cmd);
+    NSString *nextState = [sm nextStateFrom:currentState forEvent:eventName];
     if (nextState) {
+        LSEvent *event = [sm eventWithName:eventName];
+        NSArray *beforeCallbacks = event.beforeCallbacks;
+        for (void(^beforeCallback)(id) in beforeCallbacks) {
+            beforeCallback(self);
+        }
         [self performSelector:@selector(setState:) withObject:nextState];
         return YES;
     } else {

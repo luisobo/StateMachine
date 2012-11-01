@@ -3,6 +3,7 @@
 
 @interface Subscription : NSObject
 @property (nonatomic, retain) NSString *state;
+@property (nonatomic, retain) NSDate *terminatedAt;
 @end
 
 @interface Subscription (State)
@@ -37,6 +38,10 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     [sm when:@"unsuspend" transitionFrom:@"suspended" to:@"active"];
     [sm when:@"terminate" transitionFrom:@"active" to:@"terminated"];
     [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
+    
+    [sm before:@"terminate" do:^(Subscription *subscription){
+        subscription.terminatedAt = [NSDate dateWithTimeIntervalSince1970:123123123];
+    }];
 });
 
 - (id)init {
@@ -434,6 +439,68 @@ context(@"given a Subscripion", ^{
                 });
                 it(@"should return NO", ^{
                     [[theValue([sut canTerminate]) should] beNo];
+                });
+            });
+        });
+    });
+    describe(@"before callbacks", ^{
+        describe(@"set terminatedAt", ^{
+            describe(@"activate", ^{
+                describe(@"from 'pending'", ^{
+                    it(@"should not set 'terminatedAt'", ^{
+                        [sut activate];
+                        
+                        [sut.terminatedAt shouldBeNil];
+                    });
+                });
+            });
+            describe(@"suspend", ^{
+                describe(@"from 'active'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                    });
+                    it(@"should not set 'terminatedAt'", ^{
+                        [sut suspend];
+                        
+                        [sut.terminatedAt shouldBeNil];
+                        
+                    });
+                });
+            });
+            describe(@"unsuspend", ^{
+                describe(@"from 'suspended'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                        [sut suspend];
+                    });
+                    it(@"should not set 'terminatedAt'", ^{
+                        [sut unsuspend];
+                        
+                        [sut.terminatedAt shouldBeNil];
+                    });
+                });
+            });
+            describe(@"terminate", ^{
+                describe(@"from'active'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                    });
+                    it(@"should set 'terminatedAt'", ^{
+                        [sut terminate];
+                        
+                        [[sut.terminatedAt should] equal:[NSDate dateWithTimeIntervalSince1970:123123123]];
+                    });
+                });
+                describe(@"from 'suspended'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                        [sut suspend];
+                    });
+                    it(@"should set 'terminatedAt'", ^{
+                        [sut terminate];
+                        
+                        [[sut.terminatedAt should] equal:[NSDate dateWithTimeIntervalSince1970:123123123]];
+                    });
                 });
             });
         });

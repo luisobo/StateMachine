@@ -5,17 +5,31 @@
     return [[self alloc] initWithName:name transitions:transitions];
 }
 - (id)initWithName:(NSString *)name transitions:(NSSet *)transitions{
+    self = [self initWithName:name transitions:transitions beforeCallbacks:[[NSArray alloc] init]];
+    return self;
+}
+
++ (id)eventWithName:(NSString *)name transitions:(NSSet *)transitions beforeCallbacks:(NSArray *)beforeCallbacks {
+    return [[self alloc] initWithName:name transitions:transitions beforeCallbacks:beforeCallbacks];
+}
+- (id)initWithName:(NSString *)name transitions:(NSSet *)transitions beforeCallbacks:(NSArray *)beforeCallbacks{
     self = [super init];
     if (self) {
         _name = [name copy];
         _transitions = (transitions) ? transitions : [[NSSet alloc] init];
+        _beforeCallbacks = (beforeCallbacks) ? beforeCallbacks : [[NSArray alloc] init];
     }
     return self;
 }
 
 - (LSEvent *)addTransition:(LSTransition *)transition {
-    
     return [LSEvent eventWithName:self.name transitions:[self.transitions setByAddingObject:transition]];
+}
+
+- (LSEvent *)addBeforeCallback:(void(^)(id))beforeCallback {
+    return [LSEvent eventWithName:self.name
+                      transitions:self.transitions
+                  beforeCallbacks:[self.beforeCallbacks arrayByAddingObject:beforeCallback]];
 }
 
 - (BOOL)isEqual:(id)object {

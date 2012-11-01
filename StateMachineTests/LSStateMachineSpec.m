@@ -1,4 +1,3 @@
-
 #import "Kiwi.h"
 #import "LSStateMachine.h"
 #import "LSEvent.h"
@@ -118,6 +117,45 @@ describe(@"nextStateFrom:forEvent:", ^{
             it(@"should return the correct state", ^{
                 [sm nextStateFrom:@"pending" forEvent:@"activate"];
             });
+        });
+    });
+});
+
+describe(@"eventWithName:", ^{
+    context(@"for a non-defined event", ^{
+        it(@"should return nil", ^{
+            [[sm eventWithName:@"undefined"] shouldBeNil];
+        });
+    });
+    context(@"for a defined event", ^{
+        beforeEach(^{
+            [sm addState:@"pending"];
+            [sm addState:@"active"];
+            [sm addState:@"suspended"];
+            [sm addState:@"terminated"];
+            
+            [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
+            [sm when:@"suspend" transitionFrom:@"active" to:@"suspended"];
+            [sm when:@"unsuspend" transitionFrom:@"suspended" to:@"active"];
+            [sm when:@"terminate" transitionFrom:@"active" to:@"terminated"];
+            [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
+        });
+        it(@"should return that event", ^{
+            LSEvent *active = [sm eventWithName:@"activate"];
+            [[active.name should] equal:@"activate"];
+            [[active.transitions should] equal:[NSSet setWithObject:[LSTransition transitionFrom:@"pending" to:@"active"]]];
+            
+            LSEvent *suspend = [sm eventWithName:@"suspend"];
+            [[suspend.name should] equal:@"suspend"];
+            [[suspend.transitions should] equal:[NSSet setWithObject:[LSTransition transitionFrom:@"active" to:@"suspended"]]];
+            
+            LSEvent *unsuspend = [sm eventWithName:@"unsuspend"];
+            [[unsuspend.name should] equal:@"unsuspend"];
+            [[unsuspend.transitions should] equal:[NSSet setWithObject:[LSTransition transitionFrom:@"suspended" to:@"active"]]];
+            
+            LSEvent *terminate = [sm eventWithName:@"terminate"];
+            [[terminate.name should] equal:@"terminate"];
+            [[terminate.transitions should] equal:[NSSet setWithObjects:[LSTransition transitionFrom:@"active" to:@"terminated"], [LSTransition transitionFrom:@"suspended" to:@"terminated"], nil]];
         });
     });
 });
