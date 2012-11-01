@@ -134,13 +134,18 @@ context(@"given a Subscripion", ^{
                 it(@"should return NO", ^{
                     [[theValue([sut activate]) should] beNo];
                 });
-                // check that the state didn't change
+                it(@"should not change the state", ^{
+                    [[sut.state should] equal:@"suspended"];
+                });
             });
         });
         describe(@"terminate", ^{
             describe(@"from pending", ^{
                 it(@"should return NO", ^{
                     [[theValue([sut terminate]) should] beNo];
+                });
+                it(@"should not change the state", ^{
+                    [[sut.state should] equal:@"pending"];
                 });
             });
         });
