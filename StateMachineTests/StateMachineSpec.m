@@ -16,6 +16,11 @@
 - (BOOL)isActive;
 - (BOOL)isSuspended;
 - (BOOL)isTerminated;
+
+- (BOOL)canActivate;
+- (BOOL)canSuspend;
+- (BOOL)canUnsuspend;
+- (BOOL)canTerminate;
 @end
 @implementation Subscription
 
@@ -290,6 +295,145 @@ context(@"given a Subscripion", ^{
                 });
                 it(@"should return YES", ^{
                     [[theValue([sut isTerminated]) should] beYes];
+                });
+            });
+        });
+    });
+    
+    describe(@"checking if an event will trigger a valid transition", ^{
+        describe(@"canActivate", ^{
+            context(@"when 'pending'", ^{
+                it(@"should return YES", ^{
+                    [[theValue([sut canActivate]) should] beYes];
+                });
+            });
+            context(@"when 'active", ^{
+                beforeEach(^{
+                    [sut activate];
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut canActivate]) should] beNo];
+                });
+            });
+            context(@"when 'suspended'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut suspend];
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut canActivate]) should] beNo];
+                });
+            });
+            context(@"when 'terminated'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut terminate];
+                    
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut canActivate]) should] beNo];
+                });
+            });
+        });
+        describe(@"canSuspend", ^{
+            context(@"when 'pending'", ^{
+                it(@"should return NO", ^{
+                    [[theValue([sut canSuspend]) should] beNo];
+                });
+            });
+            context(@"when 'active", ^{
+                beforeEach(^{
+                    [sut activate];
+                });
+                it(@"should return YES", ^{
+                    [[theValue([sut canSuspend]) should] beYes];
+                });
+            });
+            context(@"when 'suspended'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut suspend];
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut canSuspend]) should] beNo];
+                });
+            });
+            context(@"when 'terminated'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut terminate];
+                    
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut canSuspend]) should] beNo];
+                });
+            });
+        });
+        describe(@"canUnsuspend", ^{
+            context(@"when 'pending'", ^{
+                it(@"should return NO", ^{
+                    [[theValue([sut canUnsuspend]) should] beNo];
+                });
+            });
+            context(@"when 'active", ^{
+                beforeEach(^{
+                    [sut activate];
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut canUnsuspend]) should] beNo];
+                });
+            });
+            context(@"when 'suspended'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut suspend];
+                });
+                it(@"should return YES", ^{
+                    [[theValue([sut canUnsuspend]) should] beYes];
+                });
+            });
+            context(@"when 'terminated'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut terminate];
+                    
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut canUnsuspend]) should] beNo];
+                });
+            });
+        });
+        describe(@"canTerminate", ^{
+            context(@"when 'pending'", ^{
+                it(@"should return NO", ^{
+                    [[theValue([sut canTerminate]) should] beNo];
+                });
+            });
+            context(@"when 'active", ^{
+                beforeEach(^{
+                    [sut activate];
+                });
+                it(@"should return YES", ^{
+                    [[theValue([sut canTerminate]) should] beYes];
+                });
+            });
+            context(@"when 'suspended'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut suspend];
+                });
+                it(@"should return YES", ^{
+                    [[theValue([sut canTerminate]) should] beYes];
+                });
+            });
+            context(@"when 'terminated'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut terminate];
+                    
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut canTerminate]) should] beNo];
                 });
             });
         });

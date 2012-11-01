@@ -101,11 +101,23 @@ BOOL LSStateMachineCheckState(id self, SEL _cmd) {
     return [query isEqualToString:currentState];
 }
 
+BOOL LSStateMachineCheckCanTransition(id self, SEL _cmd) {
+    LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
+    NSString *currentState = [self performSelector:@selector(state)];
+    NSString *query = [[NSStringFromSelector(_cmd) stringByReplacingOccurrencesOfString:@"can" withString:@""] lowercaseString];
+    NSString *nextState = [sm nextStateFrom:currentState forEvent:query];
+    return nextState != nil;
+}
+
 void LSStateMachineInitializeClass(Class klass) {
     LSStateMachine *sm = [klass performSelector:@selector(stateMachine)];
     for (LSEvent *event in sm.events) {
         class_addMethod(klass, NSSelectorFromString(event.name), (IMP) LSStateMachineTriggerEvent, "i@:");
+        
+        NSString *transitionQueryMethodName = [NSString stringWithFormat:@"can%@", [event.name capitalizedString]];
+        class_addMethod(klass, NSSelectorFromString(transitionQueryMethodName), (IMP) LSStateMachineCheckCanTransition, "i@:");
     }
+    
     for (NSString *state in sm.states) {
         NSString *queryMethodName = [NSString stringWithFormat:@"is%@", [state capitalizedString]];
         class_addMethod(klass, NSSelectorFromString(queryMethodName), (IMP) LSStateMachineCheckState, "i@:");
