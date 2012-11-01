@@ -2,7 +2,7 @@
 
 State machine library for Objective-C
 
-This library was inspired by INSERT STATE MACHINE LINK HERE.
+This library was inspired by the Ruby gem [state_machine](https://github.com/pluginaweek/state_machine).
 
 ## Features
 * DSL for defining the state machine of your classes
