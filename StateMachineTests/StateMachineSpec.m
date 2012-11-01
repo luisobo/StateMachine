@@ -11,6 +11,11 @@
 - (BOOL)suspend;
 - (BOOL)unsuspend;
 - (BOOL)terminate;
+
+- (BOOL)isPending;
+- (BOOL)isActive;
+- (BOOL)isSuspended;
+- (BOOL)isTerminated;
 @end
 @implementation Subscription
 
@@ -149,8 +154,145 @@ context(@"given a Subscripion", ^{
                 });
             });
         });
-
-
+    });
+    
+    describe(@"checking if it's in a state", ^{
+        describe(@"isPending", ^{
+            context(@"when 'pending'", ^{
+                it(@"should return YES", ^{
+                    [[theValue([sut isPending]) should] beYes];
+                });
+            });
+            context(@"when 'active'", ^{
+                beforeEach(^{
+                    [sut activate];
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut isPending]) should] beNo];
+                });
+            });
+            context(@"when 'suspended'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut suspend];
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut isPending]) should] beNo];
+                });
+            });
+            context(@"when 'terminated'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut terminate];
+                    
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut isPending]) should] beNo];
+                });
+            });
+        });
+        describe(@"isActive", ^{
+            context(@"when 'pending'", ^{
+                it(@"should return NO", ^{
+                    [[theValue([sut isActive]) should] beNo];
+                });
+            });
+            context(@"when 'active'", ^{
+                beforeEach(^{
+                    [sut activate];
+                });
+                it(@"should return YES", ^{
+                    [[theValue([sut isActive]) should] beYes];
+                });
+            });
+            context(@"when 'suspended'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut suspend];
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut isActive]) should] beNo];
+                });
+            });
+            context(@"when 'terminated'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut terminate];
+                    
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut isActive]) should] beNo];
+                });
+            });
+        });
+        describe(@"isSuspended", ^{
+            context(@"when 'pending'", ^{
+                it(@"should return NO", ^{
+                    [[theValue([sut isSuspended]) should] beNo];
+                });
+            });
+            context(@"when 'active'", ^{
+                beforeEach(^{
+                    [sut activate];
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut isSuspended]) should] beNo];
+                });
+            });
+            context(@"when 'suspended'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut suspend];
+                });
+                it(@"should return YES", ^{
+                    [[theValue([sut isSuspended]) should] beYes];
+                });
+            });
+            context(@"when 'terminated'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut terminate];
+                    
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut isSuspended]) should] beNo];
+                });
+            });
+        });
+        describe(@"isTerminated", ^{
+            context(@"when 'pending'", ^{
+                it(@"should return NO", ^{
+                    [[theValue([sut isTerminated]) should] beNo];
+                });
+            });
+            context(@"when 'active'", ^{
+                beforeEach(^{
+                    [sut activate];
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut isTerminated]) should] beNo];
+                });
+            });
+            context(@"when 'suspended'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut suspend];
+                });
+                it(@"should return NO", ^{
+                    [[theValue([sut isTerminated]) should] beNo];
+                });
+            });
+            context(@"when 'terminated'", ^{
+                beforeEach(^{
+                    [sut activate];
+                    [sut terminate];
+                    
+                });
+                it(@"should return YES", ^{
+                    [[theValue([sut isTerminated]) should] beYes];
+                });
+            });
+        });
     });
 });
 SPEC_END
