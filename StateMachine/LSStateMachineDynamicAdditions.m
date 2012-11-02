@@ -7,6 +7,7 @@ extern void * LSStateMachineDefinitionKey;
 BOOL LSStateMachineTriggerEvent(id self, SEL _cmd);
 void LSStateMachineInitializeInstance(id self, SEL _cmd);
 
+// This is the implementation of all the event instance methods
 BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
     NSString *currentState = [self performSelector:@selector(state)];
     LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
@@ -30,25 +31,29 @@ BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
     }
 }
 
+// This is the implementation of the initializeStateMachine instance method
 void LSStateMachineInitializeInstance(id self, SEL _cmd) {
     LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
     [self performSelector:@selector(setState:) withObject:[sm initialState]];
 }
 
+// This is the implementation of all the is<StateName> instance methods
 BOOL LSStateMachineCheckState(id self, SEL _cmd) {
     NSString *currentState = [self performSelector:@selector(state)];
-    NSString *query = [[NSStringFromSelector(_cmd) stringByReplacingOccurrencesOfString:@"is" withString:@""] lowercaseString];
+    NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:2] lowercaseString];
     return [query isEqualToString:currentState];
 }
 
+// This is the implementation of all the can<EventName> instance methods
 BOOL LSStateMachineCheckCanTransition(id self, SEL _cmd) {
     LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
     NSString *currentState = [self performSelector:@selector(state)];
-    NSString *query = [[NSStringFromSelector(_cmd) stringByReplacingOccurrencesOfString:@"can" withString:@""] lowercaseString];
+    NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:3] lowercaseString];
     NSString *nextState = [sm nextStateFrom:currentState forEvent:query];
     return nextState != nil;
 }
 
+// This is called in the initilize class method in the STATE_MACHINE macro
 void LSStateMachineInitializeClass(Class klass) {
     LSStateMachine *sm = [klass performSelector:@selector(stateMachine)];
     for (LSEvent *event in sm.events) {
@@ -65,6 +70,7 @@ void LSStateMachineInitializeClass(Class klass) {
     class_addMethod(klass, @selector(initializeStateMachine), (IMP) LSStateMachineInitializeInstance, "v@:");
 }
 
+// This is called in the stateMachine class method defined by the STATE_MACHINE macro
 LSStateMachine * LSStateMachineSetDefinitionForClass(Class klass,void(^definition)(LSStateMachine *)) {
     LSStateMachine *sm = (LSStateMachine *)objc_getAssociatedObject(klass, &LSStateMachineDefinitionKey);
     if (!sm) {
