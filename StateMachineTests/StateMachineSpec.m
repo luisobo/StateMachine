@@ -4,6 +4,7 @@
 @interface Subscription : NSObject
 @property (nonatomic, retain) NSString *state;
 @property (nonatomic, retain) NSDate *terminatedAt;
+- (void) stopBilling;
 @end
 
 @interface Subscription (State)
@@ -33,14 +34,18 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     [sm addState:@"suspended"];
     [sm addState:@"terminated"];
     
-    [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
-    [sm when:@"suspend" transitionFrom:@"active" to:@"suspended"];
+    [sm when:@"activate"  transitionFrom:@"pending"   to:@"active"];
+    [sm when:@"suspend"   transitionFrom:@"active"    to:@"suspended"];
     [sm when:@"unsuspend" transitionFrom:@"suspended" to:@"active"];
-    [sm when:@"terminate" transitionFrom:@"active" to:@"terminated"];
+    [sm when:@"terminate" transitionFrom:@"active"    to:@"terminated"];
     [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
     
     [sm before:@"terminate" do:^(Subscription *subscription){
         subscription.terminatedAt = [NSDate dateWithTimeIntervalSince1970:123123123];
+    }];
+    
+    [sm after:@"suspend" do:^(Subscription *subscription) {
+        [subscription stopBilling];
     }];
 });
 
@@ -50,6 +55,10 @@ STATE_MACHINE(^(LSStateMachine *sm) {
         [self initializeStateMachine];
     }
     return self;
+}
+
+- (void) stopBilling {
+    // Yeah, sure...
 }
 
 @end
@@ -505,5 +514,68 @@ context(@"given a Subscripion", ^{
             });
         });
     });
+    
+    describe(@"after callbacks", ^{
+        describe(@"call stopBilling", ^{
+            describe(@"activate", ^{
+                describe(@"from 'pending'", ^{
+                    it(@"should not call stopBillin'", ^{
+                        [[[sut shouldNot] receive] stopBilling];
+                        
+                        [sut activate];
+                    });
+                });
+            });
+            describe(@"suspend", ^{
+                describe(@"from 'active'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                    });
+                    it(@"should call stopBilling", ^{
+                        [[[sut should] receive] stopBilling];
+                        
+                        [sut suspend];
+                    });
+                });
+            });
+            describe(@"unsuspend", ^{
+                describe(@"from 'suspended'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                        [sut suspend];
+                    });
+                    it(@"should not call stopBillin", ^{
+                        [[[sut shouldNot] receive] stopBilling];
+                        
+                        [sut unsuspend];
+                    });
+                });
+            });
+            describe(@"terminate", ^{
+                describe(@"from'active'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                    });
+                    it(@"should not call stopBillin", ^{
+                        [[[sut shouldNot] receive] stopBilling];
+                        
+                        [sut terminate];
+                    });
+                });
+                describe(@"from 'suspended'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                        [sut suspend];
+                    });
+                    it(@"should not call stopBilling", ^{
+                        [[[sut shouldNot] receive] stopBilling];
+                        
+                        [sut terminate];
+                    });
+                });
+            });
+        });
+    });
+
 });
 SPEC_END

@@ -51,10 +51,17 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     return nil;
 }
 
-- (void)before:(NSString *)eventName do:(void (^)(id object))callback {
+- (void)before:(NSString *)eventName do:(LSStateMachineTransitionCallback)callback {
     LSEvent *oldEvent = [self eventWithName:eventName];
     [self.mutableEvents removeObject:oldEvent];
     LSEvent *newEvent = [oldEvent addBeforeCallback:callback];
+    [self.mutableEvents addObject:newEvent];
+}
+
+- (void)after:(NSString *)eventName do:(LSStateMachineTransitionCallback)callback {
+    LSEvent *oldEvent = [self eventWithName:eventName];
+    [self.mutableEvents removeObject:oldEvent];
+    LSEvent *newEvent = [oldEvent addAfterCallback:callback];
     [self.mutableEvents addObject:newEvent];
 }
 
@@ -95,6 +102,11 @@ BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
             beforeCallback(self);
         }
         [self performSelector:@selector(setState:) withObject:nextState];
+        
+        NSArray *afterCallbacks = event.afterCallbacks;
+        for (LSStateMachineTransitionCallback afterCallback in afterCallbacks) {
+            afterCallback(self);
+        }
         return YES;
     } else {
         return NO;

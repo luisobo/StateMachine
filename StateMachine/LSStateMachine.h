@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
-
-@class LSEvent;
+#import "LSEvent.h"
 
 @interface LSStateMachine : NSObject
 @property (nonatomic, strong, readonly) NSSet *states;
@@ -10,7 +9,8 @@
 - (void)when:(NSString *)eventName transitionFrom:(NSString *)from to:(NSString *)to;
 - (LSEvent *)eventWithName:(NSString *)name;
 
-- (void)before:(NSString *)eventName do:(void (^)(id object))callback;
+- (void)before:(NSString *)eventName do:(LSStateMachineTransitionCallback)callback;
+- (void)after:(NSString *)eventName do:(LSStateMachineTransitionCallback)callback;
 
 - (NSString *)nextStateFrom:(NSString *)from forEvent:(NSString *)event;
 

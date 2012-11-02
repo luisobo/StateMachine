@@ -5,19 +5,27 @@
     return [[self alloc] initWithName:name transitions:transitions];
 }
 - (id)initWithName:(NSString *)name transitions:(NSSet *)transitions{
-    self = [self initWithName:name transitions:transitions beforeCallbacks:[[NSArray alloc] init]];
+    self = [self initWithName:name transitions:transitions beforeCallbacks:@[] afterCallbacks:@[]];
     return self;
 }
 
-+ (id)eventWithName:(NSString *)name transitions:(NSSet *)transitions beforeCallbacks:(NSArray *)beforeCallbacks {
-    return [[self alloc] initWithName:name transitions:transitions beforeCallbacks:beforeCallbacks];
++ (id)eventWithName:(NSString *)name
+        transitions:(NSSet *)transitions
+    beforeCallbacks:(NSArray *)beforeCallbacks
+     afterCallbacks:(NSArray *)afterCallbacks {
+    return [[self alloc] initWithName:name transitions:transitions beforeCallbacks:beforeCallbacks afterCallbacks:afterCallbacks];
 }
-- (id)initWithName:(NSString *)name transitions:(NSSet *)transitions beforeCallbacks:(NSArray *)beforeCallbacks{
+
+- (id)initWithName:(NSString *)name
+       transitions:(NSSet *)transitions
+   beforeCallbacks:(NSArray *)beforeCallbacks
+    afterCallbacks:(NSArray *)afterCallbacks {
     self = [super init];
     if (self) {
         _name = [name copy];
         _transitions = (transitions) ? transitions : [[NSSet alloc] init];
-        _beforeCallbacks = (beforeCallbacks) ? beforeCallbacks : [[NSArray alloc] init];
+        _beforeCallbacks = (beforeCallbacks) ? beforeCallbacks : @[];
+        _afterCallbacks = (afterCallbacks) ? afterCallbacks : @[];
     }
     return self;
 }
@@ -29,7 +37,15 @@
 - (LSEvent *)addBeforeCallback:(void(^)(id))beforeCallback {
     return [LSEvent eventWithName:self.name
                       transitions:self.transitions
-                  beforeCallbacks:[self.beforeCallbacks arrayByAddingObject:beforeCallback]];
+                  beforeCallbacks:[self.beforeCallbacks arrayByAddingObject:beforeCallback]
+                   afterCallbacks:self.afterCallbacks];
+}
+
+- (LSEvent *)addAfterCallback:(LSStateMachineTransitionCallback)afterCallback {
+    return [LSEvent eventWithName:self.name
+                      transitions:self.transitions
+                  beforeCallbacks:self.beforeCallbacks
+            afterCallbacks:[self.afterCallbacks arrayByAddingObject:afterCallback]];
 }
 
 - (BOOL)isEqual:(id)object {
