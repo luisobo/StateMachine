@@ -2,6 +2,7 @@
 #define StateMachine_LSStateMachineMacros_h
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
+#import "LSStateMachineDynamicAdditions.h"
 
 #define STATE_MACHINE(definition) \
 + (LSStateMachine *)stateMachine {\

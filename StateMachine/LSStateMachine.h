@@ -15,10 +15,3 @@
 - (NSString *)nextStateFrom:(NSString *)from forEvent:(NSString *)event;
 
 @end
-
-extern void * LSStateMachineDefinitionKey;
-
-BOOL LSStateMachineTriggerEvent(id self, SEL _cmd);
-void LSStateMachineInitializeInstance(id self, SEL _cmd);
-void LSStateMachineInitializeClass(Class klass);
-LSStateMachine * LSStateMachineSetDefinitionForClass(Class klass,void(^definition)(LSStateMachine *));
