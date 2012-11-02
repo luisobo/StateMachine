@@ -9,7 +9,7 @@ This library was inspired by the Ruby gem [state_machine](https://github.com/plu
 * Dynamically added methods to trigger events in the instances of your classes
 * Methods to query if an object is in a certain state (isActive, isPending, etc)
 * Methods to query wheter an event will trigger a valid transition or not (canActive, canSuspend, etc)
-* Transition callbacks (only support for 'before' transition for the moment). Execute arbitrary code when a certain transition occurs.
+* Transition callbacks. Execute arbitrary code before and after a transition occurs.
 
 ## Installation
 _WIP_ (please, read: You figure it out, and then you tell me)
@@ -30,6 +30,7 @@ At this moment you are responsible of defining a state property like this. In th
 @property (nonatomic, retain) NSString *state; // Property managed by StateMachine
 
 @property (nonatomic, retain) NSDate *terminatedAt;
+- (void) stopBilling;
 @end
 ```
 
@@ -59,6 +60,10 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     [sm before:@"terminate" do:^(Subscription *subscription){
         subscription.terminatedAt = [NSDate dateWithTimeIntervalSince1970:123123123];
     }];
+    
+    [sm after:@"suspend" do:^(Subscription *subscription) {
+        [subscription stopBilling];
+    }];
 });
 
 - (id)init {
@@ -67,6 +72,10 @@ STATE_MACHINE(^(LSStateMachine *sm) {
         [self initializeStateMachine];
     }
     return self;
+}
+
+- (void) stopBilling {
+    // Yeah, sure...
 }
 
 @end
@@ -116,6 +125,7 @@ You can trigger events
 subscription.state; // @"active"
 
 [subscription suspend]; // retuns YES because it's a valid transition
+// Method stopBilling was called
 subscription.state; // @"suspended"
 
 [subscription terminate]; // retuns YES because it's a valid transition
@@ -130,3 +140,10 @@ If we trigger an invalid event
 subscription.state; // @"suspended"
 ```
 
+## Contributing
+
+1. Fork it
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create new Pull Request
