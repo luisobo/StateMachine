@@ -130,7 +130,7 @@ subscription.state; // @"suspended"
 
 [subscription terminate]; // retuns YES because it's a valid transition
 subscription.state; // @"terminated"
-subcription.terminatedAt; // NSDate dateWithTimeIntervalSince1970:123123123];
+subcription.terminatedAt; // [NSDate dateWithTimeIntervalSince1970:123123123];
 ```
 
 If we trigger an invalid event
