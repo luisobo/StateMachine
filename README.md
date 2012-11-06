@@ -12,9 +12,13 @@ This library was inspired by the Ruby gem [state_machine](https://github.com/plu
 * Transition callbacks. Execute arbitrary code before and after a transition occurs.
 
 ## Installation
-_WIP_ (please, read: You figure it out, and then you tell me)
+### As a [CocoaPod](http://cocoapods.org/)
+Just add this to your Podfile
+```ruby
+pod 'StateMachine', '~> 0.1'
+```
 
-* StateMachine will be a [CocoaPod](http://cocoapods.org/) soon.
+### Other approaches
 * You should be able to add StateMachine to you source tree. If you are using git, consider using a `git submodule`
 
 ##Usage
