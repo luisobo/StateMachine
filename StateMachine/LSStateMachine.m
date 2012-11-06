@@ -1,6 +1,7 @@
 #import "LSStateMachine.h"
 #import "LSEvent.h"
 #import "LSTransition.h"
+#import "LSStateMachineTypedefs.h"
 
 void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
 

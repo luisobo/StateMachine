@@ -1,5 +1,7 @@
 #import "LSStateMachineDynamicAdditions.h"
 #import "LSStateMachine.h"
+#import "LSEvent.h"
+
 #import <objc/runtime.h>
 
 extern void * LSStateMachineDefinitionKey;

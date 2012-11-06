@@ -1,8 +1,7 @@
 #import <Foundation/Foundation.h>
+#import "LSStateMachineTypedefs.h"
 
 @class LSTransition;
-
-typedef void(^LSStateMachineTransitionCallback)(id object);
 
 @interface LSEvent : NSObject
 @property (nonatomic, copy, readonly) NSString *name;

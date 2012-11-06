@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
-#import "LSEvent.h"
+#import "LSStateMachineTypedefs.h"
+
+@class LSEvent;
 
 @interface LSStateMachine : NSObject
 @property (nonatomic, strong, readonly) NSSet *states;
