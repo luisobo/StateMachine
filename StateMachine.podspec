@@ -17,7 +17,9 @@ Pod::Spec.new do |s|
 
   s.public_header_files = ['StateMachine/StateMachine.h', 
     'StateMachine/LSStateMachine.h', 
-    'StateMachine/LSStateMachineMacros.h']
+    'StateMachine/LSStateMachineMacros.h',
+    'StateMachine/LSStateMachineTypedefs.h',
+    'StateMachine/LSStateMachineDynamicAdditions.h']
 
   s.requires_arc = true
 end
