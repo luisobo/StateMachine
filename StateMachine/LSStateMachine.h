@@ -9,6 +9,7 @@
 @property (nonatomic, strong) NSString *initialState;
 - (void)addState:(NSString *)state;
 - (void)when:(NSString *)eventName transitionFrom:(NSString *)from to:(NSString *)to;
+- (void)when:(NSString *)eventName transitionFrom:(NSString *)from to:(NSString *)to if:(LSStateMachineTransitionCondition)condition;
 - (LSEvent *)eventWithName:(NSString *)name;
 
 - (void)before:(NSString *)eventName do:(LSStateMachineTransitionCallback)callback;

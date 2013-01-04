@@ -101,6 +101,30 @@ describe(@"addTransition", ^{
             });
         });
 
+        describe(@"transition conditions", ^{
+            it(@"should be able to accept a condition for the transition", ^{
+                [sm when:@"activate" transitionFrom:@"pending" to:@"active" if:^BOOL(id object) {
+                    return YES;
+                }];
+
+                [[sm.events should] haveCountOf:1];
+                LSEvent *event = [sm.events anyObject];
+
+                [[event.transitions should] haveCountOf:1];
+                LSTransition *transition = [event.transitions anyObject];
+
+                [transition.condition shouldNotBeNil];
+                [[theValue(transition.condition(nil)) should] equal:theValue(YES)];
+            });
+
+            it(@"should not transition if condition is negative", ^{
+                [sm when:@"activate" transitionFrom:@"pending" to:@"active" if:^BOOL(id object) {
+                    return NO;
+                }];
+
+                [[sm nextStateFrom:@"pending" forEvent:@"activate"] shouldBeNil];
+            });
+        });
     });
 });
 
