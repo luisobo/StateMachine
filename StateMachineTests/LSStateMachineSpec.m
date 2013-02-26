@@ -14,25 +14,25 @@ describe(@"initialState", ^{
     });
     context(@"when setting the initial state", ^{
         it(@"should set that state as default", ^{
-            sm.initialState = @"pending";
+            sm.initialState = @"pendingActivation";
             
-            [[sm.initialState should] equal:@"pending"]; // Over testing? Probably
+            [[sm.initialState should] equal:@"pendingActivation"]; // Over testing? Probably
         });
         context(@"when the state being set as initial does not exist in the state machine", ^{
             it(@"should also add it", ^{
-                sm.initialState = @"pending";
+                sm.initialState = @"pendingActivation";
                 
-                [[sm.states should] equal:[[NSSet alloc] initWithArray:@[@"pending"]]];
+                [[sm.states should] equal:[[NSSet alloc] initWithArray:@[@"pendingActivation"]]];
             });
         });
         context(@"when the state being set as initial is already defined in the state machine", ^{
             beforeEach(^{
-                [sm addState:@"pending"];
+                [sm addState:@"pendingActivation"];
             });
             it(@"should no read it", ^{
-                sm.initialState = @"pending";
+                sm.initialState = @"pendingActivation";
                 
-                [[sm.states should] equal:[[NSSet alloc] initWithArray:@[@"pending"]]];
+                [[sm.states should] equal:[[NSSet alloc] initWithArray:@[@"pendingActivation"]]];
             });
         });
     });
@@ -46,34 +46,34 @@ describe(@"addState", ^{
     context(@"after adding one state", ^{
         context(@"when the SM has no initial state", ^{
             it(@"should contain that state", ^{
-                [sm addState:@"pending"];
+                [sm addState:@"pendingActivation"];
                 
-                [[sm.states should] equal:[[NSSet alloc] initWithArray:@[@"pending"]]];
+                [[sm.states should] equal:[[NSSet alloc] initWithArray:@[@"pendingActivation"]]];
             });
             it(@"should set that state as the initial", ^{
-                [sm addState:@"pending"];
+                [sm addState:@"pendingActivation"];
                 
-                [[sm.initialState should] equal:@"pending"];
+                [[sm.initialState should] equal:@"pendingActivation"];
             });
         });
     });
     
     context(@"after adding two states", ^{
         beforeEach(^{
-            [sm addState:@"pending"];
+            [sm addState:@"pendingActivation"];
             [sm addState:@"active"];
         });
         it(@"should contain those states", ^{
-            [[sm.states should] equal:[[NSSet alloc] initWithArray:@[@"pending", @"active"]]];
+            [[sm.states should] equal:[[NSSet alloc] initWithArray:@[@"pendingActivation", @"active"]]];
         });
     });
     
     context(@"after adding the same state twice", ^{
         it(@"should have no effect", ^{
-            [sm addState:@"pending"];
-            [sm addState:@"pending"];
+            [sm addState:@"pendingActivation"];
+            [sm addState:@"pendingActivation"];
             
-            [[sm.states should] equal:[NSSet setWithObject:@"pending"]];
+            [[sm.states should] equal:[NSSet setWithObject:@"pendingActivation"]];
         });
     });
 });
@@ -82,18 +82,18 @@ describe(@"addTransition", ^{
     it(@"should have no transitions by default", ^{
         [[sm.events should] equal: [[NSSet alloc] init]];
     });
-    context(@"given a state machine with the states 'pending' and 'active'", ^{
+    context(@"given a state machine with the states 'pendingActivation' and 'active'", ^{
         beforeEach(^{
-            [sm addState:@"pending"];
+            [sm addState:@"pendingActivation"];
             [sm addState:@"active"];
         });
-        describe(@"after adding a transition from 'pending' to 'active' called activate", ^{
+        describe(@"after adding a transition from 'pendingActivation' to 'active' called activate", ^{
             describe(@"when the SM has no events previously defined", ^{
                 it(@"should contain one event", ^{
-                    [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
+                    [sm when:@"activate" transitionFrom:@"pendingActivation" to:@"active"];
                     
                     [[sm.events should] haveCountOf:1];
-                    NSSet *transitions = [NSSet setWithObject:[LSTransition transitionFrom:@"pending" to:@"active"]];
+                    NSSet *transitions = [NSSet setWithObject:[LSTransition transitionFrom:@"pendingActivation" to:@"active"]];
                     LSEvent * event = [LSEvent eventWithName:@"activate"
                                                  transitions:transitions];
                     [[sm.events should] contain:event];
@@ -107,15 +107,15 @@ describe(@"addTransition", ^{
 describe(@"nextStateFrom:forEvent:", ^{
     context(@"given a SM with two states and one transition", ^{
         beforeEach(^{
-            [sm addState:@"pending"];
+            [sm addState:@"pendingActivation"];
             [sm addState:@"active"];
             
-            [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
+            [sm when:@"activate" transitionFrom:@"pendingActivation" to:@"active"];
         });
         
         context(@"when asking for the next state of a valid transition", ^{
             it(@"should return the correct state", ^{
-                [sm nextStateFrom:@"pending" forEvent:@"activate"];
+                [sm nextStateFrom:@"pendingActivation" forEvent:@"activate"];
             });
         });
     });
@@ -129,12 +129,12 @@ describe(@"eventWithName:", ^{
     });
     context(@"for a defined event", ^{
         beforeEach(^{
-            [sm addState:@"pending"];
+            [sm addState:@"pendingActivation"];
             [sm addState:@"active"];
             [sm addState:@"suspended"];
             [sm addState:@"terminated"];
             
-            [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
+            [sm when:@"activate" transitionFrom:@"pendingActivation" to:@"active"];
             [sm when:@"suspend" transitionFrom:@"active" to:@"suspended"];
             [sm when:@"unsuspend" transitionFrom:@"suspended" to:@"active"];
             [sm when:@"terminate" transitionFrom:@"active" to:@"terminated"];
@@ -143,7 +143,7 @@ describe(@"eventWithName:", ^{
         it(@"should return that event", ^{
             LSEvent *active = [sm eventWithName:@"activate"];
             [[active.name should] equal:@"activate"];
-            [[active.transitions should] equal:[NSSet setWithObject:[LSTransition transitionFrom:@"pending" to:@"active"]]];
+            [[active.transitions should] equal:[NSSet setWithObject:[LSTransition transitionFrom:@"pendingActivation" to:@"active"]]];
             
             LSEvent *suspend = [sm eventWithName:@"suspend"];
             [[suspend.name should] equal:@"suspend"];
