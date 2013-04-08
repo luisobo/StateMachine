@@ -1,11 +1,3 @@
-//
-//  NSString+Capitalize.m
-//  StateMachine
-//
-//  Created by Steven Luscher on 2013-02-25.
-//  Copyright (c) 2013 Luis Solano Bonet. All rights reserved.
-//
-
 #import "NSString+Capitalize.h"
 
 @implementation NSString (Capitalize)
