@@ -5,6 +5,8 @@
 @property (nonatomic, retain) NSString *state;
 @property (nonatomic, retain) NSDate *terminatedAt;
 - (void) stopBilling;
+- (void) startSendingProduct;
+- (void) stopSendingProduct;
 @end
 
 @interface Subscription (State)
@@ -47,6 +49,15 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     [sm after:@"suspend" do:^(Subscription *subscription) {
         [subscription stopBilling];
     }];
+    
+    [sm entering:@"active" do:^(Subscription *subscription) {
+        [subscription startSendingProduct];
+    }];
+    
+    [sm exiting:@"active" do:^(Subscription *subscription) {
+        [subscription stopSendingProduct];
+    }];
+    
 });
 
 - (id)init {
@@ -59,6 +70,14 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 
 - (void) stopBilling {
     // Yeah, sure...
+}
+
+- (void) startSendingProduct {
+    // tell fulfillment department to start
+}
+
+- (void) stopSendingProduct {
+    // tell fulfillment department to stop
 }
 
 @end
@@ -569,6 +588,130 @@ context(@"given a Subscripion", ^{
                     });
                     it(@"should not call stopBilling", ^{
                         [[[sut shouldNot] receive] stopBilling];
+                        
+                        [sut terminate];
+                    });
+                });
+            });
+        });
+    });
+
+    
+    describe(@"entering callbacks", ^{
+        describe(@"call startSendingProduct", ^{
+            describe(@"activate", ^{
+                describe(@"from 'pending'", ^{
+                    it(@"should call startSendingProduct'", ^{
+                        [[[sut should] receive] startSendingProduct];
+                        
+                        [sut activate];
+                    });
+                });
+            });
+            describe(@"suspend", ^{
+                describe(@"from 'active'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                    });
+                    it(@"should not call startSendingProduct", ^{
+                        [[[sut shouldNot] receive] startSendingProduct];
+                        
+                        [sut suspend];
+                    });
+                });
+            });
+            describe(@"unsuspend", ^{
+                describe(@"from 'suspended'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                        [sut suspend];
+                    });
+                    it(@"should call startSendingProduct", ^{
+                        [[[sut should] receive] startSendingProduct];
+                        
+                        [sut unsuspend];
+                    });
+                });
+            });
+            describe(@"terminate", ^{
+                describe(@"from'active'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                    });
+                    it(@"should not call startSendingProduct", ^{
+                        [[[sut shouldNot] receive] startSendingProduct];                        
+                        [sut terminate];
+                    });
+                });
+                describe(@"from 'suspended'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                        [sut suspend];
+                    });
+                    it(@"should not call startSendingProduct", ^{
+                        [[[sut shouldNot] receive] startSendingProduct];
+                        
+                        [sut terminate];
+                    });
+                });
+            });
+        });
+    });
+
+    describe(@"exiting callbacks", ^{
+        describe(@"call stopSendingProduct", ^{
+            describe(@"activate", ^{
+                describe(@"from 'pending'", ^{
+                    it(@"should not call startSendingProduct'", ^{
+                        [[[sut shouldNot] receive] stopSendingProduct];
+                        
+                        [sut activate];
+                    });
+                });
+            });
+            describe(@"suspend", ^{
+                describe(@"from 'active'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                    });
+                    it(@"should call stopSendingProduct", ^{
+                        [[[sut should] receive] stopSendingProduct];
+                        
+                        [sut suspend];
+                    });
+                });
+            });
+            describe(@"unsuspend", ^{
+                describe(@"from 'suspended'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                        [sut suspend];
+                    });
+                    it(@"should not call stopSendingProduct", ^{
+                        [[[sut shouldNot] receive] stopSendingProduct];
+                        
+                        [sut unsuspend];
+                    });
+                });
+            });
+            describe(@"terminate", ^{
+                describe(@"from'active'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                    });
+                    it(@"should call stopSendingProduct", ^{
+                        [[[sut should] receive] stopSendingProduct];
+                        
+                        [sut terminate];
+                    });
+                });
+                describe(@"from 'suspended'", ^{
+                    beforeEach(^{
+                        [sut activate];
+                        [sut suspend];
+                    });
+                    it(@"should not call stopSendingProduct", ^{
+                        [[[sut shouldNot] receive] stopSendingProduct];
                         
                         [sut terminate];
                     });

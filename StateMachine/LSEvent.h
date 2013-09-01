@@ -15,7 +15,7 @@
 + (id)eventWithName:(NSString *)name
         transitions:(NSSet *)transitions
     beforeCallbacks:(NSArray *)beforeCallbacks
-    afterCallbacks:(NSArray *)afterCallbacks;
+     afterCallbacks:(NSArray *)afterCallbacks;
 
 - (id)initWithName:(NSString *)name
        transitions:(NSSet *)transitions

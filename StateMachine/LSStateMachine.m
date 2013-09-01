@@ -12,13 +12,18 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
 @interface LSStateMachine ()
 @property (nonatomic, strong) NSMutableSet *mutableStates;
 @property (nonatomic, strong) NSMutableSet *mutableEvents;
+@property (nonatomic, strong) NSMutableDictionary *mutableEnteringCallbacks;
+@property (nonatomic, strong) NSMutableDictionary *mutableExitingCallbacks;
 @end
+
 @implementation LSStateMachine
 - (id)init {
     self = [super init];
     if (self) {
         _mutableStates = [[NSMutableSet alloc] init];
         _mutableEvents = [[NSMutableSet alloc] init];
+        _mutableEnteringCallbacks = [[NSMutableDictionary alloc] init];
+        _mutableExitingCallbacks = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -65,12 +70,28 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     [self.mutableEvents addObject:newEvent];
 }
 
+- (void)entering:(NSString *)state do:(LSStateMachineTransitionCallback)callback {
+    self.mutableEnteringCallbacks[state] = callback;
+}
+
+- (void)exiting:(NSString *)state do:(LSStateMachineTransitionCallback)callback {
+    self.mutableExitingCallbacks[state] = callback;
+}
+
 - (NSSet *)states {
     return [NSSet setWithSet:self.mutableStates];
 }
 
 - (NSSet *)events {
     return [NSSet setWithSet:self.mutableEvents];
+}
+
+- (NSDictionary *)enteringCallbacks {
+    return [NSDictionary dictionaryWithDictionary:self.mutableEnteringCallbacks];
+}
+
+- (NSDictionary *)exitingCallbacks {
+    return [NSDictionary dictionaryWithDictionary:self.mutableExitingCallbacks];
 }
 
 - (void)setInitialState:(NSString *)defaultState {
