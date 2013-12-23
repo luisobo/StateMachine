@@ -1,3 +1,5 @@
+#import "NSString+Capitalize.h"
+
 #import "LSStateMachineDynamicAdditions.h"
 #import "LSStateMachine.h"
 #import "LSEvent.h"
@@ -42,7 +44,7 @@ void LSStateMachineInitializeInstance(id self, SEL _cmd) {
 // This is the implementation of all the is<StateName> instance methods
 BOOL LSStateMachineCheckState(id self, SEL _cmd) {
     NSString *currentState = [self performSelector:@selector(state)];
-    NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:2] lowercaseString];
+    NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:2] initialLowercase];
     return [query isEqualToString:currentState];
 }
 
@@ -50,7 +52,7 @@ BOOL LSStateMachineCheckState(id self, SEL _cmd) {
 BOOL LSStateMachineCheckCanTransition(id self, SEL _cmd) {
     LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
     NSString *currentState = [self performSelector:@selector(state)];
-    NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:3] lowercaseString];
+    NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:3] initialLowercase];
     NSString *nextState = [sm nextStateFrom:currentState forEvent:query];
     return nextState != nil;
 }
@@ -61,12 +63,12 @@ void LSStateMachineInitializeClass(Class klass) {
     for (LSEvent *event in sm.events) {
         class_addMethod(klass, NSSelectorFromString(event.name), (IMP) LSStateMachineTriggerEvent, "i@:");
         
-        NSString *transitionQueryMethodName = [NSString stringWithFormat:@"can%@", [event.name capitalizedString]];
+        NSString *transitionQueryMethodName = [NSString stringWithFormat:@"can%@", [event.name initialCapital]];
         class_addMethod(klass, NSSelectorFromString(transitionQueryMethodName), (IMP) LSStateMachineCheckCanTransition, "i@:");
     }
     
     for (NSString *state in sm.states) {
-        NSString *queryMethodName = [NSString stringWithFormat:@"is%@", [state capitalizedString]];
+        NSString *queryMethodName = [NSString stringWithFormat:@"is%@", [state initialCapital]];
         class_addMethod(klass, NSSelectorFromString(queryMethodName), (IMP) LSStateMachineCheckState, "i@:");
     }
     class_addMethod(klass, @selector(initializeStateMachine), (IMP) LSStateMachineInitializeInstance, "v@:");

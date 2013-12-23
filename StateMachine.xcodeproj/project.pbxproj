@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D6F730316DC962D00A5A8F4 /* NSString+Capitalize.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D6F730216DC962D00A5A8F4 /* NSString+Capitalize.m */; };
+		8DF481D617125AB600B4B5F9 /* NSString+CapitalizeSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF481D517125AB600B4B5F9 /* NSString+CapitalizeSpec.m */; };
 		A001F2031630DB10002AEC31 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A001F2021630DB10002AEC31 /* Foundation.framework */; };
 		A001F2121630DB11002AEC31 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A001F2111630DB11002AEC31 /* SenTestingKit.framework */; };
 		A001F2151630DB11002AEC31 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A001F2021630DB10002AEC31 /* Foundation.framework */; };
@@ -48,6 +50,9 @@
 /* Begin PBXFileReference section */
 		1E77622C3F81426C94A2727E /* libPods-StateMachineTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StateMachineTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BBE849696034C15B9965570 /* Pods-StateMachineTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StateMachineTests.xcconfig"; path = "Pods/Pods-StateMachineTests.xcconfig"; sourceTree = SOURCE_ROOT; };
+		8D6F730116DC962D00A5A8F4 /* NSString+Capitalize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Capitalize.h"; sourceTree = "<group>"; };
+		8D6F730216DC962D00A5A8F4 /* NSString+Capitalize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Capitalize.m"; sourceTree = "<group>"; };
+		8DF481D517125AB600B4B5F9 /* NSString+CapitalizeSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+CapitalizeSpec.m"; sourceTree = "<group>"; };
 		A001F1FF1630DB10002AEC31 /* libStateMachine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStateMachine.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A001F2021630DB10002AEC31 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A001F2061630DB10002AEC31 /* StateMachine-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StateMachine-Prefix.pch"; sourceTree = "<group>"; };
@@ -137,6 +142,8 @@
 				A066CFF9163D941D0061797C /* LSTransition.h */,
 				A066CFFA163D941D0061797C /* LSTransition.m */,
 				A0C8CA39163DE6F50027B912 /* LSStateMachineMacros.h */,
+				8D6F730116DC962D00A5A8F4 /* NSString+Capitalize.h */,
+				8D6F730216DC962D00A5A8F4 /* NSString+Capitalize.m */,
 				A05206BC164363FF00D5E855 /* LSStateMachineDynamicAdditions.h */,
 				A05206BD164363FF00D5E855 /* LSStateMachineDynamicAdditions.m */,
 				A0BBF3581648C2D600DED3C2 /* LSStateMachineTypedefs.h */,
@@ -156,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				A001F21A1630DB11002AEC31 /* Supporting Files */,
+				8DF481D517125AB600B4B5F9 /* NSString+CapitalizeSpec.m */,
 				A001F2201630DB11002AEC31 /* StateMachineSpec.m */,
 				A066CFEE163D850B0061797C /* LSStateMachineSpec.m */,
 				A066CFF2163D8FF50061797C /* LSEventSpec.m */,
@@ -290,6 +298,7 @@
 				A066CFF6163D90190061797C /* LSEvent.m in Sources */,
 				A066CFFB163D941D0061797C /* LSTransition.m in Sources */,
 				A05206BE164363FF00D5E855 /* LSStateMachineDynamicAdditions.m in Sources */,
+				8D6F730316DC962D00A5A8F4 /* NSString+Capitalize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,6 +310,7 @@
 				A066CFEF163D850B0061797C /* LSStateMachineSpec.m in Sources */,
 				A066CFF3163D8FF50061797C /* LSEventSpec.m in Sources */,
 				A066CFF8163D94070061797C /* LSTransitionSpec.m in Sources */,
+				8DF481D617125AB600B4B5F9 /* NSString+CapitalizeSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
