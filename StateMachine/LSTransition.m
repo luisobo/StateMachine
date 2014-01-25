@@ -13,6 +13,15 @@
     return self;
 }
 
+- (BOOL)checkCondition
+{
+    if (!self.condition)
+    {
+        return YES;
+    }
+    return self.condition(self);
+}
+
 - (BOOL)isEqual:(id)object {
     if (self == object) {
         return YES;

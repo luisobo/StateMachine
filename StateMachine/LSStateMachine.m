@@ -30,8 +30,13 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
 }
 
 - (void)when:(NSString *)eventName transitionFrom:(NSString *)from to:(NSString *)to; {
+    [self when:eventName transitionFrom:from to:to if:nil];
+}
+
+- (void)when:(NSString *)eventName transitionFrom:(NSString *)from to:(NSString *)to if:(LSStateMachineTransitionCondition)condition; {
     LSEvent *event = [self eventWithName:eventName];
     LSTransition *transition = [LSTransition transitionFrom:from to:to];
+    transition.condition = condition;
     if (!event) {
         event = [LSEvent eventWithName:eventName transitions:[NSSet setWithObject:transition]];
     } else {
@@ -44,7 +49,7 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
 - (NSString *)nextStateFrom:(NSString *)from forEvent:(NSString *)eventName {
     LSEvent *event = [self eventWithName:eventName];
     for (LSTransition *transition in event.transitions) {
-        if ([transition.from isEqualToString:from]) {
+        if ([transition.from isEqualToString:from] && [transition checkCondition]) {
             return transition.to;
         }
     }

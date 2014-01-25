@@ -13,4 +13,8 @@ it(@"should have a source or 'from' state", ^{
 it(@"should have a final or 'to' state", ^{
     [[transition.to should] equal:@"active"];
 });
+
+it(@"should have an empty condition block", ^{
+    [transition.condition shouldBeNil];
+});
 SPEC_END
