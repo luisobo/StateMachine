@@ -15,7 +15,7 @@ This library was inspired by the Ruby gem [state_machine](https://github.com/plu
 ### As a [CocoaPod](http://cocoapods.org/)
 Just add this to your Podfile
 ```ruby
-pod 'StateMachine', '~> 0.1'
+pod 'StateMachine'
 ```
 
 ### Other approaches
@@ -35,6 +35,8 @@ At this moment you are responsible of defining a state property like this. In th
 
 @property (nonatomic, retain) NSDate *terminatedAt;
 - (void) stopBilling;
+- (void) startSendingProduct;
+- (void) stopSendingProduct;
 @end
 ```
 
@@ -68,6 +70,15 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     [sm after:@"suspend" do:^(Subscription *subscription) {
         [subscription stopBilling];
     }];
+
+    [sm entering:@"active" do:^(Subscription *subscription) {
+        [subscription startSendingProduct];
+    }];
+
+    [sm exiting:@"active" do:^(Subscription *subscription) {
+        [subscription stopSendingProduct];
+    }];
+
 });
 
 - (id)init {
@@ -80,6 +91,14 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 
 - (void) stopBilling {
     // Yeah, sure...
+}
+
+- (void) startSendingProduct {
+    // tell fulfillment department to start
+}
+
+- (void) stopSendingProduct {
+    // tell fulfillment department to stop
 }
 
 @end

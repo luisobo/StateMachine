@@ -23,7 +23,18 @@ BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
         for (void(^beforeCallback)(id) in beforeCallbacks) {
             beforeCallback(self);
         }
+
+        void (^exitingCallback)(id) = sm.exitingCallbacks[currentState];
+        if (exitingCallback) {
+            exitingCallback(self);
+        }
+        
         [self performSelector:@selector(setState:) withObject:nextState];
+        
+        void (^enteringCallback)(id) = sm.enteringCallbacks[nextState];
+        if (enteringCallback) {
+            enteringCallback(self);
+        }
         
         NSArray *afterCallbacks = event.afterCallbacks;
         for (LSStateMachineTransitionCallback afterCallback in afterCallbacks) {
